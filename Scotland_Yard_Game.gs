@@ -1,4 +1,9 @@
+/*
+Google Script Code for Scotland Yard
+Author: Navin Prabhu
+Date: 2020 Quarantine
 
+*/
 var station_row = new Array(199)
 var station_col = new Array(199)
 
