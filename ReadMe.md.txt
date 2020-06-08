@@ -1,0 +1,1 @@
+This is a spreadsheet version of the classic game "Scotland Yard" and it uses Google Script code in the background to enable to game play
