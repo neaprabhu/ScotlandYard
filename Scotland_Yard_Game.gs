@@ -404,12 +404,15 @@ station_col[196] = 87
 station_col[197] = 132
 station_col[198] = 161
 
-var mySheet = SpreadsheetApp.getActiveSheet()
+var mySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Main')
+var mrxSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Mr X')
 var myDrawings = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDrawings();
 var orow = -1
 var ocol = -4
-var x_2xmoves = ['HQ12', 'HQ4','HQ5','HQ6','HQ7','HQ8','HQ9','HQ10','HS4','HS5','HS6','HS7','HS8','HS9','HS10','HT4','HT5','HT6','HT7','HT8','HT9','HT10','HU4','HU5','HU6']
-var moves = [['HM12', 'HM4','HM5','HM6','HM7','HM8','HM9','HM10','HN4','HN5','HN6','HN7','HN8','HN9','HN10','HO4','HO5','HO6','HO7','HO8','HO9','HO10','HP4','HP5','HP6'],
+var xSheet_2xMoves = ['G12', 'G4','G5','G6','G7','G8','G9','G10','H4','H5','H6','H7','H8','H9','H10','I4','I5','I6','I7','I8','I9','I10','J4','J5','J6']
+var xSheet_moves = ['C12', 'C4','C5','C6','C7','C8','C9','C10','D4','D5','D6','D7','D8','D9','D10','E4','E5','E6','E7','E8','E9','E10','F4','F5','F6']
+var x_2xmoves = ['HN12', 'HI4','HI5','HI6','HI7','HI8','HI9','HL10','HL4','HL5','HL6','HL7','HL8','HL9','HO10','HO4','HO5','HO6','HO7','HO8','HO9','HR10','HR4','HR5','HR6']
+var moves = [['GY12', 'GT4','GT5','GT6','GT7','GT8','GT9','GT10','GW4','GW5','GW6','GW7','GW8','GW9','GW10','GZ4','GZ5','GZ6','GZ7','GZ8','GZ9','GZ10','HC4','HC5','HC6'],
              ['HM25', 'HM14','HM15','HM16','HM17','HM18','HM19','HM20','HM21','HM22','HM23','HN14','HN15','HN16','HN17','HN18','HN19','HN20','HN21','HN22','HN23','HO14','HO15','HO16','HO17'],
              ['HN38', 'HN27','HN28','HN29','HN30','HN31','HN32','HN33','HN34','HN35','HN36','HO27','HO28','HO29','HO30','HO31','HO32','HO33','HO34','HO35','HO36','HP27','HP28','HP29','HP30'],
              ['HN51', 'HN40','HN41','HN42','HN43','HN44','HN45','HN46','HN47','HN48','HN49','HO40','HO41','HO42','HO43','HO44','HO45','HO46','HO47','HO48','HO49','HP40','HP41','HP42','HP43'],
@@ -417,20 +420,21 @@ var moves = [['HM12', 'HM4','HM5','HM6','HM7','HM8','HM9','HM10','HN4','HN5','HN
              ['IN38', 'IN27','IN28','IN29','IN30','IN31','IN32','IN33','IN34','IN35','IN36','IO27','IO28','IO29','IO30','IO31','IO32','IO33','IO34','IO35','IO36','IP27','IP28','IP29','IP30'],
              ['IN51', 'IN40','IN41','IN42','IN43','IN44','IN45','IN46','IN47','IN48','IN49','IO40','IO41','IO42','IO43','IO44','IO45','IO46','IO47','IO48','IO49','IP40','IP41','IP42','IP43']];
 var taxi_budget = [4, 10, 10, 10, 10, 10, 10, 10]
-var taxi_balance = ['GT3', 'GT16', 'GU29', 'GU42','HT16', 'HU29','HU42']
+var taxi_balance = ['A3', 'GT16', 'GU29', 'GU42','HT16', 'HU29','HU42']
 var bus_budget = [3, 8, 8, 8, 8, 8, 8, 8]
-var bus_balance = ['HC3', 'HA16', 'HB29', 'HB42','IA16', 'IB29','IB42']
+var bus_balance = ['B3', 'HA16', 'HB29', 'HB42','IA16', 'IB29','IB42']
 var metro_budget = [3, 4, 4, 4, 4, 4, 4, 4]
-var metro_balance = ['HL3', 'HH16', 'HI29', 'HI42','IH16', 'II29','II42']
+var metro_balance = ['E3', 'HH16', 'HI29', 'HI42','IH16', 'II29','II42']
 var black_budget = [6, 0, 0, 0, 0, 0, 0, 0]
-var black_balance = ['HU3', '', '', '','', '','']
+var black_balance = ['H3', '', '', '','', '','']
 var x2_budget = [2, 0, 0, 0, 0, 0, 0, 0]
-var x2_balance = ['ID3', '', '', '','', '','']
-var wildcard = ['GT5', '', '', '','', '','']
-var tm = ['GT4', 'GT17', 'GU30', 'GU43','HT17', 'HU30','HU43']
-var position = ['GT6', 'GT18', 'GU31', 'GU44','HT18', 'HU31','HU44']
+var x2_balance = ['K3', '', '', '','', '','']
+var x_stuff = ['A3','B3','E3','H3','K3']
+var wildcard = ['A5', '', '', '','', '','']
+var tm = ['A4', 'GT17', 'GU30', 'GU43','HT17', 'HU30','HU43']
+var position = ['A6', 'GT18', 'GU31', 'GU44','HT18', 'HU31','HU44']
 var new_position = [0, 0, 0, 0, 0, 0, 0, 0]
-var font_position = ['white', 'black', 'black','black','black','black','black']
+var font_position = ['black', 'black', 'black','black','black','black','black']
 var font_move = ['black', 'black', 'black','black','black','black','black']
 var bg = ['white', 'white', 'white', 'white', 'white', 'white', 'white' ]
 var d_wins = ['red', 'green', 'green', 'green', 'green', 'green', 'green']
@@ -449,6 +453,10 @@ var gameProperties = PropertiesService.getScriptProperties()
 function parkrings(){
   var a = 0
   var b = -2
+  var activesheet
+  
+  activesheet = SpreadsheetApp.getActiveSpreadsheet();
+  activesheet.getSheetByName('Main')
   for(i=0; i<max_players; i++){
     
     myDrawings[2*i].setPosition(parking[i][0]+a, parking[i][1]+b, 0, 0)
@@ -466,7 +474,10 @@ function clearstatusbox(){
 }
 
 function movering(drawingnumber, x_coord, y_coord, x_off, y_off){
+  var activesheet
   
+  activesheet = SpreadsheetApp.getActiveSpreadsheet();
+  activesheet.getSheetByName('Main')
   myDrawings[drawingnumber].setPosition(x_coord, y_coord, x_off, y_off)
 }
 
@@ -478,37 +489,59 @@ function ResetSheet(){
   for(i = 0; i < max_players; i++){
     
     //Set Budgets
-    mySheet.getRange(taxi_balance[i]).setValue(taxi_budget[i])
-    mySheet.getRange(bus_balance[i]).setValue(bus_budget[i])
-    mySheet.getRange(metro_balance[i]).setValue(metro_budget[i])
     if(i==0){
      
-      mySheet.getRange(black_balance[i]).setValue(black_budget[i])
-      mySheet.getRange(x2_balance[i]).setValue(x2_budget[i])
-      mySheet.getRange(wildcard[i]).clearContent()
-    }
-    
-    mySheet.getRange(tm[i]).clearContent()
-    mySheet.getRange(position[i]).clearContent()
-    mySheet.getRange(position[i]).setBackground(bg[i])
-    mySheet.getRange(position[i]).setFontColor(font_position[i])
-    for(y = 0; y <  max_moves; y++){
+      mrxSheet.getRange(taxi_balance[i]).setValue(taxi_budget[i])
+      mrxSheet.getRange(bus_balance[i]).setValue(bus_budget[i])
+      mrxSheet.getRange(metro_balance[i]).setValue(metro_budget[i])
+      mrxSheet.getRange(black_balance[i]).setValue(black_budget[i])
+      mrxSheet.getRange(x2_balance[i]).setValue(x2_budget[i])
+      mrxSheet.getRange(wildcard[i]).clearContent()
       
-      mySheet.getRange(moves[i][y]).setBackground(bg[i])
-      mySheet.getRange(moves[i][y]).setFontColor(font_move[i])
-      mySheet.getRange(moves[i][y]).setValue(y)
-      mySheet.getRange(x_2xmoves[y]).setBackground(bg[i])
+      mrxSheet.getRange(tm[i]).clearContent()
+      mrxSheet.getRange(position[i]).clearContent()
+      mrxSheet.getRange(position[i]).setBackground(bg[i])
+      mrxSheet.getRange(position[i]).setFontColor(font_position[i])
       
-    }
-    if(i==0){
       mySheet.getRange(move_flag[i]).setValue("X")
       mySheet.getRange(move_flag[i]).setBackground("white")
       mySheet.getRange(move_flag[i]).setFontColor("black")
+      
     }else{
+      mySheet.getRange(taxi_balance[i]).setValue(taxi_budget[i])
+      mySheet.getRange(bus_balance[i]).setValue(bus_budget[i])
+      mySheet.getRange(metro_balance[i]).setValue(metro_budget[i])
+        
+      mySheet.getRange(tm[i]).clearContent()
+      mySheet.getRange(position[i]).clearContent()
+      mySheet.getRange(position[i]).setBackground(bg[i])
+      mySheet.getRange(position[i]).setFontColor(font_position[i])
       
       mySheet.getRange(move_flag[i]).setValue("D"+i.toString())
       mySheet.getRange(move_flag[i]).setBackground("white")
       mySheet.getRange(move_flag[i]).setFontColor("black")
+    
+    }
+    
+    for(y = 0; y <  max_moves; y++){
+      
+      //Mr X Sheet updates
+      if(i == 0){
+      
+        mrxSheet.getRange(xSheet_moves[y]).setBackground(bg[i])
+        mrxSheet.getRange(xSheet_moves[y]).setFontColor(font_move[i])
+        mrxSheet.getRange(xSheet_moves[y]).setValue(y)
+        mrxSheet.getRange(xSheet_2xMoves[y]).setBackground(bg[i])
+        mrxSheet.getRange(xSheet_2xMoves[y]).setValue(y)
+      }
+      
+      //Main Sheet Updates
+      mySheet.getRange(moves[i][y]).setBackground(bg[i])
+      mySheet.getRange(moves[i][y]).setFontColor(font_move[i])
+      mySheet.getRange(moves[i][y]).setValue(y)
+      mySheet.getRange(x_2xmoves[y]).setBackground(bg[i])
+      mySheet.getRange(x_2xmoves[y]).setValue(y)
+      
     }
     
   }
@@ -543,20 +576,29 @@ function move_zero(){
       }while(flag==1)
       
     }
-    mySheet.getRange(position[i]).setBackground(bg[i])
-    mySheet.getRange(position[i]).setFontColor(font_position[i])
-    mySheet.getRange(position[i]).setValue(move0[i])  
-    if(i != 0){
+    if(i == 0){
+      
+      mrxSheet.getRange(position[i]).setBackground(bg[i])
+      mrxSheet.getRange(position[i]).setFontColor(font_position[i])
+      mrxSheet.getRange(position[i]).setValue(move0[i])
+      
+      mySheet.getRange(moves[i][0]).setBackground("white")
+      mySheet.getRange(moves[i][0]).setFontColor("white")
+      mySheet.getRange(moves[i][0]).setValue(move0[i])
+      mrxSheet.getRange(xSheet_moves[0]).setBackground("white")
+      mrxSheet.getRange(xSheet_moves[0]).setFontColor("black")
+      mrxSheet.getRange(xSheet_moves[0]).setValue(move0[i])
+    
+    }else{
+      mySheet.getRange(position[i]).setBackground(bg[i])
+      mySheet.getRange(position[i]).setFontColor(font_position[i])
+      mySheet.getRange(position[i]).setValue(move0[i])
+      
       movering(2*i, station_row[move0[i] - 1] + orow, station_col[move0[i] - 1] + ocol, 0, 0)
       mySheet.getRange(moves[i][0]).setBackground(bg[i])
       mySheet.getRange(moves[i][0]).setFontColor(font_move[i])
       mySheet.getRange(moves[i][0]).setValue(move0[i])
-      
-    }else{
-      mySheet.getRange(moves[i][0]).setBackground("white")
-      mySheet.getRange(moves[i][0]).setFontColor("white")
-      mySheet.getRange(moves[i][0]).setValue(move0[i])
-      
+    
     }
     
   }
@@ -786,61 +828,83 @@ function d6_move_update(){
 function x_move_update(){
  
   clearstatusbox()
-  new_position[0] = mySheet.getRange(position[0]).getValue()
+  new_position[0]= mrxSheet.getRange(position[0]).getValue()
   var myKey = gameProperties.getProperty('global_counter')
   var idx = parseInt(myKey)
   var counter, previous_move
-  previous_move = mySheet.getRange(moves[0][idx-1]).getValue()
+  previous_move = mrxSheet.getRange(xSheet_moves[idx-1]).getValue()
   if(new_position[0] == previous_move){
     //This move cannot happen because the new position has not been updated by the player/detective
-    mySheet.getRange(position[0]).clearContent()
-    mySheet.getRange(position[0]).setBackground("red")
-    mySheet.getRange(position[0]).setFontColor("red")
-    updatestatusbox("This move cannot happen because the new position has not been updated by the player/Mr X Please correct")
+    mrxSheet.getRange(position[0]).clearContent()
+    mrxSheet.getRange(position[0]).setBackground("red")
+    mrxSheet.getRange(position[0]).setFontColor("red")
+    //updatestatusbox("This move cannot happen because the new position has not been updated by the player/Mr X Please correct")
     
   }else{
-    mySheet.getRange(position[0]).setBackground(bg[0])
-    mySheet.getRange(position[0]).setFontColor(font_position[0])
+    mrxSheet.getRange(position[0]).setBackground(bg[0])
+    mrxSheet.getRange(position[0]).setFontColor(font_position[0])
     mySheet.getRange(move_flag[0]).setFontColor("green")
     mySheet.getRange(move_flag[0]).setBackground("green")    
     mySheet.getRange(move_flag[0]).setValue(1)
-    if(mySheet.getRange(wildcard[0]).getValue() == "2X"){
+    if(mrxSheet.getRange(wildcard[0]).getValue() == "2X"){
       mySheet.getRange(x_2xmoves[idx]).setBackground("red")
+      mrxSheet.getRange(xSheet_2xMoves[idx]).setBackground("red")
+    }else{
+      mySheet.getRange(x_2xmoves[idx]).clearContent()
+      mrxSheet.getRange(xSheet_2xMoves[idx]).clearContent()
+    
     }
     if(idx == 3 || idx == 8 || idx == 13 || idx == 18 || idx == 24){
       movering(0, station_row[new_position[0]-1] + orow, station_col[new_position[0] - 1] + ocol, 0, 0)
-      mySheet.getRange(position[0]).setBackground("black")
-      mySheet.getRange(position[0]).setFontColor("white")
-      if(mySheet.getRange(tm[0]).getValue()=="TAXI"){
+      mrxSheet.getRange(position[0]).setBackground("black")
+      mrxSheet.getRange(position[0]).setFontColor("white")
+      if(mrxSheet.getRange(tm[0]).getValue()=="TAXI"){
         mySheet.getRange(moves[0][idx]).setBackground("yellow")
         mySheet.getRange(moves[0][idx]).setFontColor("black")
-        }else if (mySheet.getRange(tm[0]).getValue()=="BUS"){
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("yellow")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("black")
+        }else if (mrxSheet.getRange(tm[0]).getValue()=="BUS"){
           mySheet.getRange(moves[0][idx]).setBackground("green")
           mySheet.getRange(moves[0][idx]).setFontColor("white")
+          mrxSheet.getRange(xSheet_moves[idx]).setBackground("green")
+          mrxSheet.getRange(xSheet_moves[idx]).setFontColor("white")
         }else if (mySheet.getRange(tm[0]).getValue()=="METRO"){
         mySheet.getRange(moves[0][idx]).setBackground("pink")
         mySheet.getRange(moves[0][idx]).setFontColor("black")
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("pink")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("black")
          
         }else{
         mySheet.getRange(moves[0][idx]).setBackground("black")
         mySheet.getRange(moves[0][idx]).setFontColor("white")
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("black")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("white")
         }
     }else{
-      if(mySheet.getRange(tm[0]).getValue()=="TAXI"){
+      if(mrxSheet.getRange(tm[0]).getValue()=="TAXI"){
         mySheet.getRange(moves[0][idx]).setBackground("yellow")
         mySheet.getRange(moves[0][idx]).setFontColor("yellow")
-      }else if (mySheet.getRange(tm[0]).getValue()=="BUS"){
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("yellow")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("black")
+      }else if (mrxSheet.getRange(tm[0]).getValue()=="BUS"){
         mySheet.getRange(moves[0][idx]).setBackground("green")
         mySheet.getRange(moves[0][idx]).setFontColor("green")
-      }else if (mySheet.getRange(tm[0]).getValue()=="METRO"){
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("green")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("white")
+      }else if (mrxSheet.getRange(tm[0]).getValue()=="METRO"){
         mySheet.getRange(moves[0][idx]).setBackground("pink")
         mySheet.getRange(moves[0][idx]).setFontColor("pink")
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("pink")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("black")
          
       }else{
         mySheet.getRange(moves[0][idx]).setBackground("black")
         mySheet.getRange(moves[0][idx]).setFontColor("black")
+        mrxSheet.getRange(xSheet_moves[idx]).setBackground("black")
+        mrxSheet.getRange(xSheet_moves[idx]).setFontColor("white")
       }
     }
+    mrxSheet.getRange(xSheet_moves[idx]).setValue(new_position[0])
     mySheet.getRange(moves[0][idx]).setValue(new_position[0])
     
   }
@@ -862,48 +926,55 @@ function gameplay(){
         vehicle = mySheet.getRange(tm[i]).getValue()
         if(i == 0){
           if(vehicle == "TAXI"){
-            temp = mySheet.getRange(taxi_balance[i]).getValue() - 1
-            mySheet.getRange(taxi_balance[i]).setValue(temp)
+            temp = mrxSheet.getRange(taxi_balance[i]).getValue() - 1
+            mrxSheet.getRange(taxi_balance[i]).setValue(temp)
           }else if(vehicle == "BUS"){
-            temp = mySheet.getRange(bus_balance[i]).getValue() - 1
-            mySheet.getRange(bus_balance[i]).setValue(temp)
+            temp = mrxSheet.getRange(bus_balance[i]).getValue() - 1
+            mrxSheet.getRange(bus_balance[i]).setValue(temp)
           }else if(vehicle == "METRO"){
-            temp = mySheet.getRange(metro_balance[i]).getValue() - 1
-            mySheet.getRange(metro_balance[i]).setValue(temp)
+            temp = mrxSheet.getRange(metro_balance[i]).getValue() - 1
+            mrxSheet.getRange(metro_balance[i]).setValue(temp)
           }else {
-            temp = mySheet.getRange(black_balance[i]).getValue() - 1
-            mySheet.getRange(black_balance[i]).setValue(temp)
+            temp = mrxSheet.getRange(black_balance[i]).getValue() - 1
+            mrxSheet.getRange(black_balance[i]).setValue(temp)
           }
           
-          wc = mySheet.getRange(wildcard[i]).getValue()
+          wc = mrxSheet.getRange(wildcard[i]).getValue()
           if(wc == "2X"){
-            temp = mySheet.getRange(x2_balance[i]).getValue() - 1
-            mySheet.getRange(x2_balance[i]).setValue(temp)
+            temp = mrxSheet.getRange(x2_balance[i]).getValue() - 1
+            mrxSheet.getRange(x2_balance[i]).setValue(temp)
           }
           
         }else{
           if(vehicle == "TAXI"){
             temp = mySheet.getRange(taxi_balance[i]).getValue() - 1
             mySheet.getRange(taxi_balance[i]).setValue(temp)
-            temp = mySheet.getRange(taxi_balance[0]).getValue() + 1
-            mySheet.getRange(taxi_balance[0]).setValue(temp)
+            temp = mrxSheet.getRange(taxi_balance[0]).getValue() + 1
+            mrxSheet.getRange(taxi_balance[0]).setValue(temp)
           }else if(vehicle == "BUS"){
             temp = mySheet.getRange(bus_balance[i]).getValue() - 1
             mySheet.getRange(bus_balance[i]).setValue(temp)
-            temp = mySheet.getRange(bus_balance[0]).getValue() + 1
-            mySheet.getRange(bus_balance[0]).setValue(temp)
+            temp = mrxSheet.getRange(bus_balance[0]).getValue() + 1
+            mrxSheet.getRange(bus_balance[0]).setValue(temp)
           }else{
             temp = mySheet.getRange(metro_balance[i]).getValue() - 1
             mySheet.getRange(metro_balance[i]).setValue(temp)
-            temp = mySheet.getRange(metro_balance[0]).getValue() + 1
-            mySheet.getRange(metro_balance[0]).setValue(temp)
+            temp = mrxSheet.getRange(metro_balance[0]).getValue() + 1
+            mrxSheet.getRange(metro_balance[0]).setValue(temp)
           }
         }
         
     }
     
     for(i = 0; i < max_players; i++){
-      new_position[i] = mySheet.getRange(moves[i][idx]).getValue()
+      if(i == 0){
+        new_position[i] = mrxSheet.getRange(xSheet_moves[idx]).getValue()
+      
+      }else{
+        new_position[i] = mySheet.getRange(moves[i][idx]).getValue()
+      
+      }
+      
       if((i != 0) && (new_position[i] == new_position[0])){
         flag = 1
       }
@@ -913,7 +984,11 @@ function gameplay(){
       mySheet.getRange(mv_counter).setBackground("green")
       mySheet.getRange(mv_counter).setFontColor("green")
       for(i = 0; i < max_players; i++){
-        mySheet.getRange(position[i]).setBackground(d_wins[i])
+        if(i == 0){
+          mrxSheet.getRange(position[i]).setBackground(d_wins[i])
+        }else{
+          mySheet.getRange(position[i]).setBackground(d_wins[i])
+        }
         mySheet.getRange(statusbox).setValue("Detectives have won and captured Mr X !!")
         
       }
@@ -928,7 +1003,11 @@ function gameplay(){
       mySheet.getRange(mv_counter).setFontColor("white")
       mySheet.getRange(mv_counter).setValue('X')
       for(i = 0; i < max_players; i++){
-        mySheet.getRange(position[i]).setBackground(x_wins[i])
+        if(i == 0){
+          mrxSheet.getRange(position[i]).setBackground(x_wins[i])
+        }else{
+          mySheet.getRange(position[i]).setBackground(x_wins[i])
+        }
         mySheet.getRange(statusbox).setValue("Mr X has won and successfully escaped !!")
         
       }
@@ -944,11 +1023,18 @@ function gameplay(){
     }
     
     
-    //Clear the contents for all the detectives only
     for(i = 0; i < max_players; i++){
-      mySheet.getRange(tm[i]).clearContent()
-      mySheet.getRange(position[i]).clearContent()
-      mySheet.getRange(position[i]).setBackground("white")
+      if(i == 0){
+        mrxSheet.getRange(tm[i]).clearContent()
+        mrxSheet.getRange(position[i]).clearContent()
+        mrxSheet.getRange(position[i]).setBackground("white")
+      
+      }else{
+        
+        mySheet.getRange(tm[i]).clearContent()
+        mySheet.getRange(position[i]).clearContent()
+        mySheet.getRange(position[i]).setBackground("white")
+      }
       mySheet.getRange(move_flag[i]).clearContent()
       mySheet.getRange(move_flag[i]).setBackground("white")
     }
