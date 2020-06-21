@@ -406,7 +406,7 @@ station_col[198] = 161
 
 var mySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Main')
 var mrxSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Mr X')
-var myDrawings = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDrawings();
+var myDrawings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Main').getDrawings()
 var orow = -1
 var ocol = -4
 var xSheet_2xMoves = ['G12', 'G4','G5','G6','G7','G8','G9','G10','H4','H5','H6','H7','H8','H9','H10','I4','I5','I6','I7','I8','I9','I10','J4','J5','J6']
@@ -453,10 +453,7 @@ var gameProperties = PropertiesService.getScriptProperties()
 function parkrings(){
   var a = 0
   var b = -2
-  var activesheet
   
-  activesheet = SpreadsheetApp.getActiveSpreadsheet();
-  activesheet.getSheetByName('Main')
   for(i=0; i<max_players; i++){
     
     myDrawings[2*i].setPosition(parking[i][0]+a, parking[i][1]+b, 0, 0)
@@ -474,10 +471,7 @@ function clearstatusbox(){
 }
 
 function movering(drawingnumber, x_coord, y_coord, x_off, y_off){
-  var activesheet
   
-  activesheet = SpreadsheetApp.getActiveSpreadsheet();
-  activesheet.getSheetByName('Main')
   myDrawings[drawingnumber].setPosition(x_coord, y_coord, x_off, y_off)
 }
 
@@ -840,6 +834,17 @@ function x_move_update(){
     mrxSheet.getRange(position[0]).setFontColor("red")
     //updatestatusbox("This move cannot happen because the new position has not been updated by the player/Mr X Please correct")
     
+  }else if(new_position[0] == mySheet.getRange(moves[1][idx-1]).getValue() || new_position[0] == mySheet.getRange(moves[2][idx-1]).getValue() || new_position[0] == mySheet.getRange(moves[3][idx-1]).getValue() || new_position[0] == mySheet.getRange(moves[4][idx-1]).getValue() || new_position[0] == mySheet.getRange(moves[5][idx-1]).getValue() || new_position[0] == mySheet.getRange(moves[6][idx-1]).getValue()){
+    //basically if Mr X. moves to a station which has a detective on it then detetctives win game
+    mySheet.getRange(mv_counter).setBackground("green")
+    for(i = 0; i < max_players; i++){
+      if(i == 0){
+        mrxSheet.getRange(position[i]).setBackground(d_wins[i])
+      }
+      mySheet.getRange(position[i]).setBackground(d_wins[i])
+      mySheet.getRange(statusbox).setValue("Detectives have won and captured Mr X !!")
+    }
+    movering(0, station_row[new_position[0]-1] + orow, station_col[new_position[0] - 1] + ocol, 0, 0)
   }else{
     mrxSheet.getRange(position[0]).setBackground(bg[0])
     mrxSheet.getRange(position[0]).setFontColor(font_position[0])
@@ -923,8 +928,8 @@ function gameplay(){
   
   if((mySheet.getRange(move_flag[0]).getValue() == 1) && (mySheet.getRange(move_flag[1]).getValue() == 1) && (mySheet.getRange(move_flag[2]).getValue() == 1) && (mySheet.getRange(move_flag[3]).getValue() == 1) && (mySheet.getRange(move_flag[4]).getValue() == 1) && (mySheet.getRange(move_flag[5]).getValue() == 1) && (mySheet.getRange(move_flag[6]).getValue() == 1)){
       for(i=0; i < max_players; i++){
-        vehicle = mySheet.getRange(tm[i]).getValue()
         if(i == 0){
+          vehicle = mrxSheet.getRange(tm[i]).getValue()
           if(vehicle == "TAXI"){
             temp = mrxSheet.getRange(taxi_balance[i]).getValue() - 1
             mrxSheet.getRange(taxi_balance[i]).setValue(temp)
@@ -946,6 +951,7 @@ function gameplay(){
           }
           
         }else{
+          vehicle = mySheet.getRange(tm[i]).getValue()
           if(vehicle == "TAXI"){
             temp = mySheet.getRange(taxi_balance[i]).getValue() - 1
             mySheet.getRange(taxi_balance[i]).setValue(temp)
@@ -986,13 +992,12 @@ function gameplay(){
       for(i = 0; i < max_players; i++){
         if(i == 0){
           mrxSheet.getRange(position[i]).setBackground(d_wins[i])
-        }else{
-          mySheet.getRange(position[i]).setBackground(d_wins[i])
         }
+        mySheet.getRange(position[i]).setBackground(d_wins[i])
         mySheet.getRange(statusbox).setValue("Detectives have won and captured Mr X !!")
         
       }
-      parkrings()
+      movering(0, station_row[new_position[0]-1] + orow, station_col[new_position[0] - 1] + ocol, 0, 0)
       
     }else if((flag != 1) && (idx != 24)){
       mySheet.getRange(mv_counter).setBackground("yellow")
@@ -1005,9 +1010,8 @@ function gameplay(){
       for(i = 0; i < max_players; i++){
         if(i == 0){
           mrxSheet.getRange(position[i]).setBackground(x_wins[i])
-        }else{
-          mySheet.getRange(position[i]).setBackground(x_wins[i])
         }
+        mySheet.getRange(position[i]).setBackground(x_wins[i])
         mySheet.getRange(statusbox).setValue("Mr X has won and successfully escaped !!")
         
       }
@@ -1046,6 +1050,7 @@ function gameplay(){
 
   
 }
+
 
 
 
